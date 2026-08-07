@@ -7,11 +7,11 @@
 
 | # | 目标楼盘 | 收件人 | 邮箱 | 状态 | 最后动作 (UTC) | 跟进次数 |
 |---|---------|--------|------|------|----------------|----------|
-| 1 | The Hub 全部 8 栋（130 Columbia St W Buildings 1/2 + GEOWAVE Towers 7/8/9；365 Albert St 含 Towers 5&6），Waterloo | LK Apartments 统一招租办公室（抄送旧运营方 Accommod8u） | leasing@lkapartments.com (cc leasing@accommod8u.com) | 已发送 08-05 01:21Z（线程 19fcf8360e839b63），66h 无回复→跟进草稿 r-7061698138432641988 待发送 | 2026-08-07 建跟进草稿 | 1 |
-| 2 | Station Park：Union Tower 1 (5 Wellington St S) / Union Tower 2 (15 Wellington St S) / DUO (25 Wellington St S)，Kitchener | Condo Culture — Emerson Maher (emerson@condoculture.ca，Business Development Manager) | emerson@condoculture.ca（原 info@ 已转人工） | **活跃**：Emerson 08-05 19:23Z 回复，问预算/需求/是否要车位（消息 19fd3616e930dbba）；回信草稿 r6941895208209928770 待发送 | 2026-08-07 建回信草稿 | 0 |
+| 1 | The Hub 全部 8 栋（130 Columbia St W Buildings 1/2 + GEOWAVE Towers 7/8/9；365 Albert St 含 Towers 5&6），Waterloo | LK Apartments 统一招租办公室（抄送旧运营方 Accommod8u） | leasing@lkapartments.com (cc leasing@accommod8u.com) | 首封 08-05 01:21Z 无回复；跟进 #1 已发 08-07 19:44Z（19fddc1d077c41cb，线程 19fcf8360e839b63）。若 08-09 19:44Z 前仍无回复→最后一次跟进（#2） | 2026-08-07 19:44Z 跟进已发 | 1 |
+| 2 | Station Park：Union Tower 1 (5 Wellington St S) / Union Tower 2 (15 Wellington St S) / DUO (25 Wellington St S)，Kitchener | Condo Culture — Emerson Maher (emerson@condoculture.ca，Business Development Manager) | emerson@condoculture.ca（原 info@ 已转人工） | **活跃**：需求回信已发 08-07 19:44Z（19fddc1c8fc587ff），等 Emerson 发房源选项+视频。48h（08-09 19:44Z）无回复则跟进 | 2026-08-07 19:44Z 回信已发 | 0 |
 | 3 | Station Park（开发商渠道） | Station Park / VanMar → 实际转 Condo Culture (rob@condoculture.ca，OOO 至 08-10；OOO 指向 emerson@ 和 cindy@) | info@stationpark.com | **并入渠道 2**（该渠道确认由 Condo Culture 代理，Emerson 已在跟） | 2026-08-05 收 OOO 19fcf8acae22a830 | - |
 | 4 | Young Condos 55 Duke St W（+ 85 Duke St W City Centre），Kitchener | Royal York Property Management | info@royalyorkpm.com | **死胡同**：自动回复称该邮箱无人监控，只给了 maintenance@/legal@，无租赁通道（19fcf8337822a799）。备选：Kitchener 办公室电话 226-499-5629（需用户打电话） | 2026-08-05 收自动回复 | - |
-| 5 | Young Condos 55 Duke St W（+ 85 Duke），Kitchener | K-W Property Management Corp — Ash Patel (ash@kwproperty.com, cc leasing@kwproperty.com) | kwp@kwproperty.com → ash@kwproperty.com | **已回复（暂无房）**：08-05 14:39Z Ash 称 55/85 Duke 目前无房，有房会挂官网 kwproperty.rhenti.com（19fd25da05821747）；求留名单回信草稿 r8827594900423019140 待发送 | 2026-08-07 建回信草稿 | 0 |
+| 5 | Young Condos 55 Duke St W（+ 85 Duke），Kitchener | K-W Property Management Corp — Ash Patel (ash@kwproperty.com, cc leasing@kwproperty.com) | kwp@kwproperty.com → ash@kwproperty.com | **暂无房，已留名单**：Ash 08-05 称 55/85 Duke 无房、有房挂官网 kwproperty.rhenti.com；留名单回信已发 08-07 19:44Z（19fddc1bb0900568）。渠道转入静默观察（无需再跟进，除非对方来信） | 2026-08-07 19:44Z 回信已发 | 0 |
 
 调研要点：
 - The Hub 8 栋楼共用一个招租办公室（LK Apartments LP，前身/关联 Accommod8u），电话 (519) 783-8383；官方广告 Sept 1 2026 – Aug 31 2027 12 个月租约、最高 2 个月免租。用户心仪两个 1B1B 户型：①客厅整面落地窗 ②corner 角房——已在邮件中点名要户型图/视频/单独报价。
@@ -39,4 +39,5 @@
 - 2026-08-05：建好 5 封草稿（见上表），等待用户在 Gmail 草稿箱一键发送。启动每小时自动循环（cron 任务 afc7392b，每小时 :11，7 天后自动过期需续期）。
 - 2026-08-05 00:4x UTC：第一轮循环：5 封草稿均未发送（刚建好，未满 24h 提醒阈值），已发初始 PushNotification 提醒用户发送。无已发邮件，故无回复可查。GitHub 推送被拒（集成只读权限），状态文件仅本地提交；等权限开通后补推。
 - 2026-08-05 01:21 UTC：用户发出全部 5 封邮件（发件人显示名 "Qeve Kaede"）。
+- 2026-08-07 20:39 UTC：Routine 首次触发。确认用户已于 19:44Z 发出全部 3 封（Hub 跟进 #1、Emerson 需求回信、Ash 留名单回信），草稿箱已清空；无新回复。下一个关键节点：08-09 19:44Z（Hub 与 Emerson 线程的 48h 跟进阈值）。GitHub 推送仍 403，跳过。
 - 2026-08-07 19:35 UTC：用户手动触发跟进。结果：①Hub 无回复 66h → 建跟进草稿（同线程）；②Emerson (Condo Culture) 问预算/需求/车位 → 建回信草稿（预算写"灵活、请发全部 1B1B 选项对比"，车位写"请标注含车位选项及价格"——用户尚未给出预算/车位偏好，待确认后可改）；③Station Park 渠道确认转 Condo Culture（rob OOO 至 08-10），并入渠道 2；④Royal York info@ 无人监控、无租赁邮箱，标记死胡同（备选电话 226-499-5629）；⑤KW Property 暂无 55/85 Duke 房源，建"留名单"回信草稿。三封新草稿待用户发送。
