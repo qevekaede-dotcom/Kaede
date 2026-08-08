@@ -74,6 +74,20 @@
 
 ---
 
+## 2.7 第四批情报：Final Review Session 笔记（同学整理，内容据说都被提及）
+
+- **TA 范围提示**：review 只讲各 module 的 major points；**adversary strategy 和 information-theoretic
+  lower bound 因时间被跳过，但"没讲 ≠ 不考"**；M1–M10 都要基本掌握，M11 低优先级（概念题为主）。
+- 确认 **Sample Final = 我们已详解的官方练习卷**（题型地图与 `final-practice-walkthrough.md` 一致）。
+- 带来一批**新考点/新例子**：information-theoretic lower bound（⌈log₂P⌉、Ω(n log n)）、adversary 四步通用结构、
+  **Branch-and-Bound**（与 backtracking pruning 的区别 + min/max bound 方向）、3D DP（k 层 + 两层空间优化）、
+  approximation ratio = max{A/O, O/A} + "无 constant bound"的 family 证明五步 + tree-height 例子、
+  reduction 语义三误解、**Hamiltonian Completion 归约例子**、FPT 速查表、LV/MC 口诀、grid-path 贪心反例、
+  以及一整套**考场英文模板**。
+- → 全部整理进 **`review-session-notes.md`**（含最后 60 秒检查清单）。
+
+---
+
 ## 3. 复习优先级（结合官方材料修订）
 
 1. ⭐ **把 `final-practice-walkthrough.md`（官方练习卷逐题详解）过一遍**——10 道 MC 的官方答案 + 理由全部搞懂，6 道长答题的"答题格式"背下来。
@@ -93,8 +107,14 @@
 ## 4. 文件说明
 
 - **`final-practice-walkthrough.md`** —— ⭐ 官方期末练习卷逐题详解（10 MC + 6 长答题，含官方答案与讲解）。
+- **`review-session-notes.md`** —— ⭐ Final Review Session 情报：TA 范围提示、其他文件未覆盖的新考点
+  （info-theoretic lower bound、Branch-and-Bound、3D DP、approx family 证明、Hamiltonian Completion、FPT 表）、
+  考场英文模板合集、最后 60 秒检查清单。
 - **`study-guide.md`** —— 完整复习笔记：每个考点的模板、例题、速查表、答题 checklist（§10 representative sets 原题详解、§12 NP 专题、§13 启发式/FPT 专题）。
 - **`practice.md`** —— 仿真练习题（带完整参考答案），Q6 已按原题重写。
+
+**考前最后一晚的顺序建议**：`final-practice-walkthrough.md`（把 Sample Final 吃透）→
+`review-session-notes.md` §13 英文模板 + §14 检查清单 → `study-guide.md` §14 checklist 查漏。
 
 > ⚠️ **注意**：官方课件带你的学号水印且版权归学校（"exclusive use of y245sun"）。这个仓库目前是 **public**，
 > 建议改成 **private**（GitHub → Kaede → Settings → General → Danger Zone → Change visibility），
