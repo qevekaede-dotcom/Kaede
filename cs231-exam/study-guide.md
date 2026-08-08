@@ -126,6 +126,38 @@ Master theorem 不适用时（如 T(n)=T(n−1)+O(n) 这种减 1 型），用**�
 4. T(n) 递归式 + 每项来源；
 5. 解递归式得出 running time。
 
+### 2.4 本课程的实际考法（从 a2-W3/W4/W5 总结，重点！）
+
+**① 伪代码格式**：课程模板是 INPUT/OUTPUT 说明 + 编号行，树操作用 IS_LEAF / CHILDREN / EDGE_WEIGHT / TREE_ROOT 这类原语。例（a2-W3 官方解，树上分治求子树边权和）：
+
+```text
+TOTAL(Tree, Node)
+INPUT:  A tree Tree and a node ID Node
+OUTPUT: The sum of the weights of all edges in the subtree rooted at Node
+1  Sum ← 0
+2  if IS_LEAF(Tree, Node)
+3      return Sum
+4  else
+5      for each Child in CHILDREN(Tree, Node)
+6          Sum ← Sum + EDGE_WEIGHT(Tree, Child)
+7          Sum ← Sum + TOTAL(Tree, Child)
+8      return Sum
+```
+
+**② "从伪代码写 recurrence"的标准答法**（a2-W4：给一段 MYSTERY 伪代码）：
+- **base case 单独一问**：指出对应哪几行（如 "Lines 1–2 / 1–4，只有常数次比较、取元素 → T(1) ∈ Θ(1)"）。
+- **general case**：对每个返回分支分别累计——哪几行是 **divide**（算分割点，Θ(1)），哪几行是 **conquer**（递归调用，每个写成 T(子问题规模)），哪几行是 **combine**（合并结果）；最后**取最贵的分支**作 worst case。
+- 子问题规模可以不均匀！例：T(n) = 2T(⌈n/5⌉) + T(⌈2n/5⌉) + Θ(1)。
+- 注意题目可能说 "You are not required to solve the recurrence" ——那就**只写不解**；问了才解。
+
+**③ Substitution method（代入法，a2-W5 考过）**：证 T(n) ∈ O(n log² n) 这类界：
+1. 猜一个**显式**上界（如 T(n) ≤ c·n log² n）；
+2. 归纳：把猜想代入递归式右边，用单调性去掉 floor/ceiling，整理出 (…)·n log² n 的形式；
+3. 解出让不等式成立的 c（如 c ≥ 16），**回头验证 base cases**（n=2, 3）也满足；
+4. 结论：T(n) ≤ 16 n log² n → T(n) ∈ O(n log² n)。
+
+**④ Master method 陷阱**（练习卷 MC7）：先**化简子问题规模**再判断——3T(⌊n/5⌋) + T(⌈2n/10⌉) 里 2n/10 = n/5，其实是 4T(n/5)，可以用 Master method。
+
 ---
 
 ## §3 Backtracking（回溯）
@@ -182,6 +214,16 @@ Safe(row, c): for r = 1 to row−1:
 ```
 
 回溯最坏情况 running time 一般是指数级（如子集问题 O(2ⁿ)、排列问题 O(n!)），剪枝只是实际更快，最坏阶不变——选择题可能考这个。
+
+**Bounding function（练习卷 MC3 考点）**：
+- maximization 问题：bounding function 给出当前部分解一切扩展的**上界**；上界 ≤ 目前最优 → 剪枝。
+- **minimization 问题：给出的是"下界 (lower bound)"**；下界 ≥ 目前最优 → 剪枝。（选择题把方向写反来骗你。）
+- 其他判断题事实：探索重复部分解**会**拖慢运行时间；backtracking **不**要求输入含树；backtracking **不保证**比 exhaustive search 快。
+
+**搜索树设计影响 FPT 性质**（2025-a4-W2，配 §13）：找大小为 k 的 cluster——
+- 树 A：每层把"与当前集合全相邻的任意顶点"作孩子 → 每层分支 Θ(n)，k 层 → **n^k 个节点，不是 f(k)·n^O(1)**；但每个大小 k 的候选都会被探索 → **正确**。
+- 树 B：把顶点排序，每层对"下一个顶点"做选/不选 → 2^k 个节点 → **是 f(k)·n^O(1)**；但只考虑了前 k+1 个顶点，可能漏解 → **不正确**。
+- 教训：时间和正确性要**分开回答**。
 
 ---
 
@@ -338,6 +380,24 @@ for i = 1 to n:
 - 先写暴力递归，再找递归里重复出现的参数组合 → 参数就是状态，加表就是 DP（memoization 也算 DP）。
 - 两个字符串/序列 → 八成是 dp[i][j]（各自的前缀）；带容量/预算 → dp[i][剩余容量]。
 
+### 5.3 本课程 DP 的实际考法（⭐ a3-W1 + 练习卷 L1/MC6 都是这一类）
+
+给一个**抽象递推式**（如 A(i,j)、N(i,j)、M(i,j)），不要你发明状态，而是考"表"本身：
+
+1. **手算某个具体值**（show your work：把依赖的项一路算出来）。
+2. **Base cases 是哪些、值是多少**（找定义里不递归的分支）。
+3. **最小的表是什么形状/大小**：把依赖箭头追出来——
+   - 只依赖 (i−1,j−1) 的对角链 → 只需 **1D 对角线表**（练习卷 L1：N(n,n) 只要 n+1 项）；
+   - 依赖上方+左方且 i ≤ j / j ≤ i → **三角形表**（a3-W1：n×n 的上三角；L1 的 N(n,n−1)：下三角 (n+1)×n）。
+4. **填表顺序**（MC6 类）：依赖左方 → 行内必须从左到右；依赖上方 → 行间从上到下；
+   "行内任意顺序"只有在**不依赖同行项**时才合法。画箭头逐项检查每个选项。
+5. **运行时间 = 表项数 × 每项时间**（a3-W1：Θ(n²) 项 × Θ(1) = Θ(n²)）。
+
+另外记一个**真题级双变量 DP**（a3-P1，STRING EDITING，带三种代价）：
+C[i][j] = 把 S 前 i 个字符编辑成 T 前 j 个字符的最小代价；
+S[i]=T[j] 时 C[i][j] = C[i−1][j−1]；否则 = min(C[i−1][j−1]+c_s, C[i−1][j]+c_d, C[i][j−1]+c_a)；
+第一行 j·c_a、第一列 i·c_d；答案 C[|S|][|T|]，**O(|S|·|T|)——标准 O(mn) 双变量表**。
+
 ---
 
 ## §6 Randomized Algorithms：Las Vegas vs Monte Carlo（简答小问）
@@ -358,6 +418,13 @@ for i = 1 to n:
 - 时间固定、输出看运气 → Monte Carlo。
 - 单边错误 (one-sided error)：如素性测试答"合数"必对、答"素数"可能错 → 重复可快速压低错误率。
 - 相互转化：Las Vegas 跑到超时就强行输出 → 变 Monte Carlo；Monte Carlo 的答案若能快速**验证**，验证失败就重跑 → 变 Las Vegas。
+
+**本课程口径（按这个答题）**：
+- Las Vegas：**保证正确** + **期望**运行时间多项式。
+- Monte Carlo：**最坏**运行时间多项式 + **高概率正确**（课程题目里用过"> 3/4"作阈值）。
+- **LV → MC 标准答案**（练习卷 L4b 原文思路）：给 LV 设一个多项式时间上限，到点没跑完就**强制停止、随便返回一个答案**——时间有保证了，正确性变成高概率。
+- **两头都不沾的例子**（2025-a4-W4）：对 representative sets 每个集合抛硬币决定选不选——可能出错（不是 LV），正确概率也不到 3/4（按课程定义也不算 MC）。判断题要敢于回答"都不是"。
+- "P 里的问题也值得用随机化吗？"——值得：可能**更简单、更快**（前提是你不需要双保证）。
 
 ---
 
@@ -408,6 +475,21 @@ Question: 是否存在物品子集，总重 ≤ W 且总价值 ≥ k？
 ```
 
 **定义题 checklist**：输入的每个符号都交代到；bound 放在 Input 里；问句只能用 Input 里出现过的东西；≤/≥ 方向别写反（最小化配 ≤ k，最大化配 ≥ k）；别把"怎么解"写进定义（定义只描述问题本身）。
+
+### 7.3 本课程的两个扩展考法（练习卷已考）
+
+**① 加 bound 也可以造 enumeration problem**（L3c）：不问"是否存在"，而是**输出全部达标解**：
+```text
+EXPENSIVE_PATH_ENUMERATION
+Input:  A tree T with a positive weight on each edge, and a bound B
+Output: ALL paths from the root to a leaf node with weight at least B
+```
+看清题目要 decision 还是 enumeration —— Output 一行完全不同。
+
+**② constructive vs evaluation optimization**（L4a）：
+- constructive 版：求**最优解本身**；evaluation 版：只求**最优值**。
+- 归约方向：**evaluation ≤ constructive 容易**（拿到最优解算个值就行）；
+  反方向难（只有值，要重构解，需要反复调用做自归约）。
 
 ---
 
@@ -460,33 +542,55 @@ Question: 是否存在物品子集，总重 ≤ W 且总价值 ≥ k？
 
 ---
 
-## §10 Representative Set 专题（assignment 原题）
+## §10 Representative Sets 专题（⭐ 原题已确认：assignment 3 W3）
 
-> ⚠️ 这是 assignment 3 或 4 的**原题**。第一要务是把你自己的作业翻出来，按当时的题面重做一遍并核对答案。
-> 本仓库里只有 CS 115 的文件，没有 CS231 的作业。下面是这类问题的标准形式，供理解框架用；以你作业的题面为准。
+> ✅ 已根据你上传的作业 PDF 确认。**真实定义**（和"hitting set"猜测不同，以此为准）：
 
-**标准定义**（"每个集合都要有代表"，即 hitting set 型）见 §7.2 的定义示例。
-
-**Brute force**：枚举 U 的所有子集 R（共 2^|U|个），检查是否命中每个 Si —— O(2^|U| · m·|U|)。
-
-**Backtracking 解法**（同时是 §3 模板的绝佳套用——考试若考"写 backtracking 伪代码"，这类题可直接用）：
+### 10.1 问题定义（背下来）
 
 ```text
-// 依次保证 S1, ..., Sm 都有代表；R 是当前已选代表集，k 是 bound
-RepSet(i, R):
-  if |R| > k: return false                 // 剪枝：超出 bound
-  if i > m: 输出 R; return true            // 所有集合都已有代表
-  if R ∩ Si ≠ ∅: return RepSet(i+1, R)     // Si 已被现有代表覆盖
-  for each x in Si:                        // 否则给 Si 挑一个代表
-      把 x 加入 R
-      if RepSet(i+1, R): return true
-      把 x 从 R 移除                        // undo
-  return false
+REPRESENTATIVE SETS（optimization 版，Assignment 2 定义）
+Input:  一个"集合的集合" 𝒜（每个成员是一个数字集合）
+Output: 最小的子集 ℬ ⊆ 𝒜，使得 ℬ 中所有集合的并 = 𝒜 中所有集合的并（记作 𝒰）
 
-主调用: RepSet(1, ∅)
+REPRESENTATIVE SETS DECISION（a3-W3 原题版）
+Input:  集合的集合 𝒜；正整数 k
+Output: Yes/No —— 是否存在 ℬ ⊆ 𝒜，使得 ∪ℬ = 𝒰 且 |ℬ| ≤ k？
 ```
 
-**变体：System of Distinct Representatives (SDR)** ——每个 Si 出一个代表 xi ∈ Si，且代表**两两不同**（|R| = m）。回溯解法同上，只是选代表时要求 `x not in R`，且不需要 bound k。你作业里的题面若是"distinct"版，用这个。
+直觉：从一堆集合里挑**尽量少的几个**，就能"代表"全部（并集不缩水）。（= set cover 类型。）
+
+### 10.2 原题：用四步 recipe 证明 REPRESENTATIVE SETS DECISION ∈ NP（8 分）
+
+**Step 1 — certificate + 多项式大小**：certificate = 𝒜 的一个子集 ℬ。大小 ≤ |𝒜|，线性 → 多项式 ✓。
+
+**Step 2 — 多项式验证算法**：
+1. 检查 certificate 是 𝒜 中互不相同的集合组成的；数到第 k+1 个就立刻回 No（保证 |ℬ| ≤ k）；
+2. 计算 ∪ℬ 和 𝒰 = ∪𝒜，比较是否相等；相等回 Yes，否则 No。
+运行时间：求并/比较都与集合总大小成多项式 ✓。
+
+**Step 3 — yes-instance 必被接受**：若答案是 Yes，则存在合法的 ℬ；以它作 certificate，大小检查和并集检查都通过 → 回 Yes ✓。
+
+**Step 4 — no-instance 不被假 certificate 骗**：若不存在合法 ℬ，则任何 certificate 至少违反其一：
+① 不是由 𝒜 中集合组成；② 个数 > k；③ 有 𝒰 中元素没被覆盖。验证算法逐条检查 → 必回 No ✓。
+
+### 10.3 同一问题的其他考法（2025 年 assignment 4 出过，都可能上考卷）
+
+**Hill climbing 解法**（W3-2025）：初始解 = 整个 𝒜；每步**删掉一个"不需要的"集合**（删掉后并集仍 = 𝒰）。
+每步解变小 → 是 hill climbing。
+- 保证最优的输入例：𝒜 = {{1,2},{3,4},{5,6},{7,8}}（元素两两不同，唯一解就是 𝒜 本身，初始即最优）。
+- **不**保证最优的输入例：𝒜 = {{1,2},{3,4},{5,6},{7,8},{1,2,3,4},{5,6,7,8}}——最优是两个大集合；
+  但如果第一步删掉了 {1,2,3,4}，之后再也回不到最优（hill climbing 不回头）。
+
+**随机化解法判断**（W4-2025）：对每个集合抛硬币（1/2 概率放进 ℬ）：
+- 是 Las Vegas 吗？**不是**——它可能给错答案（LV 要求永远正确）。
+- 是 Monte Carlo 吗？运行时间多项式 ✓，但正确概率不超过课程定义的"高概率"（> 3/4）→ **也不算**（按课程定义）。
+- 对 P 里的问题用随机化有意义吗？**有**——可能更简单/更快（如果你不需要时间或正确性的双保证）。
+
+### 10.4 如果考"写 backtracking/exhaustive 伪代码解它"
+
+按 §3 模板：按顺序对 𝒜 中每个集合做"选/不选"二叉决策树；部分解 = 已决定的前缀；
+剪枝：已选个数 > k → 剪掉；到底时检查 ∪ℬ = 𝒰。（exhaustive 版就是枚举 𝒜 的全部 2^|𝒜| 个子集逐一检查。）
 
 ---
 
@@ -538,16 +642,96 @@ ActivitySelect(activities):
 
 ---
 
-## §12 考前最后过一遍（checklist）
+## §12 NP、归约与复杂度类（⭐ 第二大重点，练习卷和 a3 都重考）
 
-- [ ] 分治模板 + binary search / merge sort 伪代码能默写
-- [ ] 会从伪代码写 T(n)，§2.3 速查表能背出，Master theorem 三种情况会用
-- [ ] 回溯模板（含 undo）+ subset sum / N-queens 能默写
-- [ ] representative set 作业原题重做过了 ✔
-- [ ] Problem 定义格式：Input/Output；optimization → decision 加 bound k，≤/≥ 方向正确
-- [ ] DP 五步法 + knapsack、LCS、weighted interval scheduling 的状态定义和递推式
-- [ ] Greedy：activity selection 的 exchange argument 证明能默写；带权反例能现场举
-- [ ] Las Vegas vs Monte Carlo 表格能复述，各记一个例子
-- [ ] §8 认范式速查表过一遍，做过 practice.md 的认代码题
-- [ ] O(n+m) vs O(nm) 的判断规则清楚，邻接表 vs 邻接矩阵
-- [ ] BFS / DFS 伪代码能默写；"最短/最少 → BFS"；§4.1 对比表 + §4.2 edge classification 能复述
+### 12.1 NP membership proof —— 四步 recipe（必背，原题就考这个）
+
+> **Step 1**：给出 yes-instance 的 **certificate**，说明大小是多项式的。
+> **Step 2**：给出 **verification algorithm**，说明最坏运行时间是多项式的。
+> **Step 3**：说明对任何 yes-instance 及其正确 certificate，算法回答 Yes。
+> **Step 4**：说明算法**不会被 no-instance 的假 certificate 骗出 Yes**（逐条列出假 certificate 可能违反的检查）。
+
+完整示例两个：SUDOKU（`final-practice-walkthrough.md` L6）、REPRESENTATIVE SETS DECISION（§10.2，a3 原题）。
+
+### 12.2 NP-completeness 归约 —— recipe（a3-W4：用 CLIQUE 证 CLUSTER DECISION）
+
+证 Z 是 NP-complete 的完整流程：
+1. 证 Z ∈ NP（用 12.1 的四步；题目可能说"已完成"）；
+2. 选一个已知 NP-complete 的问题 Y（如 CLIQUE）；
+3. **给出把 Y 的任意 instance 映射为 Z 的 instance 的算法 f**（不需要映满 Z）；
+4. 证：x 是 Y 的 yes-instance ⟹ f(x) 是 Z 的 yes-instance；
+5. 证：f(x) 是 Z 的 yes-instance ⟹ x 是 Y 的 yes-instance；
+6. 证 f 的运行时间是多项式的。
+
+a3-W4 的映射（感受一下 f 长什么样）：CLIQUE 的 (G, k) ↦ CLUSTER DECISION 的 (G_C, k_C, B_C)：
+G_C = 给 G 每条边权重 1；k_C = k；B_C = C(k,2) = k(k−1)/2（大小 k 的 clique 恰有这么多条边）。
+
+### 12.3 类与事实（选择题弹药库）
+
+| 类 | 一句话 |
+|---|---|
+| **P** | 多项式时间可解 |
+| **NP** | 解可以在多项式时间**验证**（yes-instance 有多项式 certificate） |
+| **NP-hard** | NP 中所有问题都可归约到它（本身可以不在 NP） |
+| **NP-complete** | NP-hard **且** ∈ NP |
+| **RP / BPP** | 多项式时间随机算法可解（单边 / 双边有界错误） |
+| **PTAS / APX** | 有任意精度多项式近似方案 / 有常数比近似算法 |
+| **FPT** | 有 f(k)·n^O(1) 算法（k 是 parameter，见 §13.3） |
+
+判断题事实（练习卷 MC4/MC5 官方答案）：
+- A NP-hard、B NP-complete ⟹ **B ≤ A**（NP 里的都能归约到 NP-hard）且 **B ∈ NP**；A 不一定 ∈ NP、A 不一定 ≤ B。
+- **若 P = NP**：P = RP、P = BPP、PTAS = APX、NC = P **全部成立**（官方答案全选，直接记）。
+
+---
+
+## §13 启发式、近似比、FPT、adversary 下界（新增考点）
+
+### 13.1 Hill climbing（爬山法）
+
+- 定义：从某个初始解出发，每步移动到**更好的邻居解**，无法改进就停。
+- 关键性质（MC8）：只保证 **local optimum**，**不保证 global**——这是判断题高频点。
+- 会描述一个具体方案：初始解是什么 + 每步怎么改 + 为什么算 hill climbing（每步都在改进目标）。
+  模板见 §10.3 representative sets 的例子（初始 = 全部 𝒜，每步删一个多余集合）。
+- 会构造两类输入：让它**保证最优**的 / 让它**卡在局部最优**的（§10.3 两个例子背下来）。
+
+### 13.2 Approximation ratio（近似比，2025-a4-W1）
+
+- 定义：近似算法输出值与最优值之比（取 ≥ 1 的方向）。
+- 会算具体图上的比值：complete graph 上 greedy cluster → 输出=最优 → **ratio 1**；树上 → 最优本身就是 2 → **ratio 1**。
+- 会构造"比值不是常数"的**图族**：给出随 n 增长的构造 + 算出 ratio ∈ Θ(√n) 这类结论。
+  （套路：造一个"诱饵"结构骗贪心拿小解，同时藏一个大最优解；让两者比值随规模增长。）
+
+### 13.3 FPT（fixed-parameter tractable）
+
+- 判据：运行时间能写成 **f(k) · n^O(1)**——f 只依赖参数 k（可以是 14^(k²) 这种怪物），n 的指数必须是**不含 k 的常数**。
+- ✓ 例：O(14^(k²) · n³ · log₇(log₃(k⁵!)) · ∛(n^101))（MC10，n 部分 = n^(3+101/3)，指数常数）。
+- ✗ 例：O(n^k)（指数里有 k，不行）——对应 §3 搜索树 A；搜索树 B 的 2^k·poly(n) 才是 FPT。
+
+### 13.4 Adversary 下界（a3-W2，可能小问出现）
+
+证明"任何算法至少要问 ℓ 次"的套路（以 MAXIMUM SIZE CLUSTER、只能问"u,v 相邻吗"为例）：
+1. **给 adversary 策略**：对所有提问都答 "no"（或都答 "yes"）——adversary 可以记住一切，但不知道算法下一步。
+2. **证明下界 ℓ = C(n,2) = n(n−1)/2**：若算法只问了 ℓ−1 个 pair 就作答，至少有一对 (u,v) 没问过——
+   - 算法答 1（no 策略下）：adversary 把没问过的那条边**补上**，真实最大 cluster 变成 2 → 算法错；
+   - 算法答 > 1：adversary **不加**那条边，最大 cluster 是 1 → 还是错。
+   两种情况都能骗到只问 ℓ−1 次的算法 ⟹ 必须问满 ℓ 次。∎
+- 要点：下界要**精确**（题目要求 do not use order notation，写 n(n−1)/2 不写 Θ(n²)）。
+
+---
+
+## §14 考前最后过一遍（checklist）
+
+- [ ] 分治：模板 + TOTAL（树上分治）/ merge sort 能默写；课程伪代码格式（INPUT/OUTPUT+编号行）
+- [ ] 会从伪代码**按行**写 T(n)（base case 一问 + general case 一问，divide/conquer/combine 各对应哪几行）
+- [ ] §2.3 递归式速查表 + Master method（先化简 2n/10 = n/5 这种）+ substitution method 四步
+- [ ] 回溯模板（含 undo）+ bounding function 方向（min 问题 → lower bound）+ 搜索树 FPT/正确性分开判断
+- [ ] **Representative Sets：定义 + NP 四步证明（§10.2 原题）能默写** ✔
+- [ ] NP 四步 recipe + 归约六步 recipe；NP-hard/complete 判断题事实；P=NP ⟹ 全塌缩（MC 全选）
+- [ ] Problem 定义：decision（加 bound k）/ enumeration（输出全部 ≥ B 的解）/ constructive vs evaluation
+- [ ] DP：五步法 + 表格题套路（手算、base case、表形状、填表顺序、表大小×每项时间）+ string editing / knapsack / LCS / weighted interval scheduling
+- [ ] Greedy：exchange argument 证明 + 带权反例 + EXPENSIVE_PATH 贪心失效反例（树）
+- [ ] LV vs MC 定义（课程口径）+ LV→MC 转化标准答案 + "两头都不是"的例子
+- [ ] Hill climbing：local vs global + 两类输入构造；approximation ratio 会算会构造；FPT 判据 f(k)·n^O(1)
+- [ ] Adversary 下界：策略 + 两分支反驳论证，答案写精确值不写 Θ
+- [ ] §8 认范式速查表过一遍；O(n+m) vs O(nm)；BFS/DFS 对比 + edge classification
+- [ ] `final-practice-walkthrough.md` 官方练习卷 10 道 MC 全部能独立说出答案和理由

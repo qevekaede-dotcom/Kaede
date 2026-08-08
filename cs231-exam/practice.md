@@ -200,36 +200,32 @@ Color(v):
 
 ---
 
-## Q6 Representative Set（对应 assignment 原题）
+## Q6 Representative Sets（✅ 已按 assignment 原题重写）
 
-集族 S₁, ..., Sₘ 是有限集 U 的子集（比如：每个社团报一份成员名单，要选一个小委员会，使**每个社团至少有一名成员入选**）。
+真实定义（a3-W3）：
 
-(a) 写出该问题 optimization 版本的正式定义。
-(b) 写出对应的 decision 版本（提示：加一个 bound）。
-(c) 给出一个 brute force 解法思路并给出其 running time。
-(d) 写出 decision 版本的 backtracking 伪代码。
+```text
+REPRESENTATIVE SETS DECISION
+Input:  一个"集合的集合" 𝒜；正整数 k
+Output: Yes/No —— 是否存在 ℬ ⊆ 𝒜，使得 ℬ 中所有集合的并 = 𝒜 中所有集合的并（𝒰），且 |ℬ| ≤ k？
+```
+
+(a) 用课程的四步 recipe 证明 REPRESENTATIVE SETS DECISION ∈ NP。（8 分原题）
+(b) 描述一个 hill-climbing 解法（optimization 版：求最小的 ℬ），说明初始解、每步操作、为何算 hill climbing。
+(c) 随机化算法：对 𝒜 中每个集合独立以 1/2 概率放入 ℬ。它是 Las Vegas 吗？是 Monte Carlo 吗（"高概率" > 3/4）？
 
 <details><summary>参考答案</summary>
 
-**(a)**
-```text
-Minimum Representative Set
-Input: 有限集 U；U 的子集 S1, ..., Sm
-Output: 大小最小的 R ⊆ U，使得对每个 i (1 ≤ i ≤ m) 都有 R ∩ Si ≠ ∅
-```
+**(a)** 四步 recipe（完整展开背 `study-guide.md` §10.2）：
+1. **Certificate**：𝒜 的一个子集 ℬ；大小 ≤ |𝒜| → 多项式 ✓。
+2. **验证算法**：检查 ℬ 由 𝒜 中互不相同的集合组成、个数 ≤ k（数到第 k+1 个立刻回 No）；求 ∪ℬ 与 𝒰 = ∪𝒜 并比较。求并与比较对集合总大小是多项式 ✓。
+3. **接受所有 yes-instance**：yes-instance 存在合法 ℬ，用它作 certificate 全部检查通过 → Yes ✓。
+4. **不被假 certificate 骗**：no-instance 的任何 certificate 必违反其一（不是 𝒜 的集合 / 个数 > k / 有 𝒰 的元素没覆盖），验证算法逐条检查 → 必回 No ✓。
 
-**(b)** Input 里**加一个正整数 k（bound）**，输出改为 yes/no 问句：
-```text
-Representative Set (decision)
-Input: 有限集 U；U 的子集 S1, ..., Sm；正整数 k
-Question: 是否存在 R ⊆ U，|R| ≤ k，使得对每个 i 都有 R ∩ Si ≠ ∅？
-```
+**(b)** 初始解 = 全部 𝒜（必定可行）；每步：找一个删掉后并集仍等于 𝒰 的集合，删掉它；删不动就停。每步解的大小严格变小（目标在改进）→ hill climbing。
+加分点：能各举一个"保证最优 / 不保证最优"的输入（`study-guide.md` §10.3 两个例子）。
 
-**(c)** 枚举 U 的所有 2^|U| 个子集 R；对每个 R 检查 |R| ≤ k 且逐一验证 m 个集合都与 R 相交（每次检查 O(m·|U|)）。总计 **O(2^|U| · m · |U|)**。
-
-**(d)** 见 `study-guide.md` §10 的 `RepSet(i, R)`：按 S₁…Sₘ 顺序处理；当前集合已被 R 命中就跳过，否则枚举其元素作代表；|R| 超过 k 立即剪枝；试完撤销。
-
-⚠️ 再提醒：考试考的是你 **assignment 3/4 的原题**，务必把作业原文翻出来重做（题面可能是 distinct representatives 变体：每个集合出一个代表且代表两两不同——伪代码只需把"选 x"限制为 `x ∉ R`）。
+**(c)** 不是 Las Vegas——它可能输出不合法/非最优答案（LV 要求永远正确）。也不算（课程定义的）Monte Carlo——运行时间确实多项式，但正确概率不 > 3/4。**两头都不是**（这是 2025-a4-W4 官方答案）。
 
 </details>
 
