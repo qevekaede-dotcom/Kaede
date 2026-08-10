@@ -8,8 +8,8 @@
 | # | 目标楼盘 | 收件人 | 邮箱 | 状态 | 最后动作 (UTC) | 跟进次数 |
 |---|---------|--------|------|------|----------------|----------|
 | 1 | The Hub 全部 8 栋（130 Columbia St W Buildings 1/2 + GEOWAVE Towers 7/8/9；365 Albert St 含 Towers 5&6），Waterloo | LK Apartments 统一招租办公室（抄送旧运营方 Accommod8u） | leasing@lkapartments.com (cc leasing@accommod8u.com) | 4 封均无回复（08-05 首封、08-07 跟进#1、08-08 补充）。**最后跟进 #2 草稿 r806286696716811663 已建（08-10 16:40Z），待用户发送**。此后邮件渠道视为用尽，建议改打电话 (519) 783-8383 | 2026-08-07 19:44Z 跟进已发 | 1 |
-| 2 | Station Park：Union Tower 1 (5 Wellington St S) / Union Tower 2 (15 Wellington St S) / DUO (25 Wellington St S)，Kitchener | Condo Culture — Emerson Maher (emerson@condoculture.ca，Business Development Manager) | emerson@condoculture.ca（原 info@ 已转人工） | **活跃/有报价**：Emerson 08-08 13:17Z 报价 **Unit 3106**：Corner 1B1B（最大 1 居）572sqft，$1,875/月，含暖气+网络+地下车位，水电另付；将再发 5-15 Wellington 选项（19fe185b23392d9f）。08-08 16:35Z 回信后 48h 无回复。**跟进 #1 草稿 r-4883265514127890651 已建（08-10 16:40Z），待用户发送**（催：3106 户型图/室内实拍视频【必须】/无车位报价/哪栋楼 + Union Towers 选项） | 2026-08-10 建跟进草稿 | 1 |
-| 3 | Station Park（开发商渠道） | Station Park / VanMar → 实际转 Condo Culture (rob@condoculture.ca，OOO 至 08-10；OOO 指向 emerson@ 和 cindy@) | info@stationpark.com | **并入渠道 2**（该渠道确认由 Condo Culture 代理，Emerson 已在跟） | 2026-08-05 收 OOO 19fcf8acae22a830 | - |
+| 2 | Station Park：Union Tower 1 (5 Wellington St S) / Union Tower 2 (15 Wellington St S) / DUO (25 Wellington St S)，Kitchener | Condo Culture — Emerson Maher (emerson@condoculture.ca，Business Development Manager) | emerson@condoculture.ca（原 info@ 已转人工） | **活跃/有报价**：Emerson 08-08 13:17Z 报价 **Unit 3106**：Corner 1B1B（最大 1 居）572sqft，$1,875/月，含暖气+网络+地下车位，水电另付；将再发 5-15 Wellington 选项（19fe185b23392d9f）。**重大进展**：Emerson 08-10 16:52Z 回复（19fec96e002bb5fb）：①3106 确认在 **DUO (25 Wellington St)** ②**户型图已附**（DUO FLOORPLAN 1F.jpg）③**不能去掉车位**（$1,875 含车位不变）④**实拍视频稍后发**⑤会发 5-15 Wellington 现有选项。回信草稿 r-4883265514127890651 已改写待发送（确认车位 OK、等视频、要 Union Towers 选项） | 2026-08-10 20:4x 改写回信草稿 | 1 |
+| 3 | Station Park（开发商渠道） | Rob McFee (rob@condoculture.ca，Sales Manager；电话/SMS/WhatsApp 519-501-8069，Calendly calendly.com/rob-condoculture) | info@stationpark.com → rob@ | **复活**：Rob 08-10 16:40Z 回复（19fec8c21d5a97c8）：想约电话；已拉 Emerson 进线程；**新一批 1B 和 1B+den 房源即将放出，很多可 9 月 1 日起租**。回信草稿 r8661965057771257603 待发送（婉拒电话、要求邮件发新房源细节+实拍视频） | 2026-08-10 建回信草稿 | 0 |
 | 4 | Young Condos 55 Duke St W（+ 85 Duke St W City Centre），Kitchener | Royal York Property Management | info@royalyorkpm.com | **死胡同**：自动回复称该邮箱无人监控，只给了 maintenance@/legal@，无租赁通道（19fcf8337822a799）。备选：Kitchener 办公室电话 226-499-5629（需用户打电话） | 2026-08-05 收自动回复 | - |
 | 5 | Young Condos 55 Duke St W（+ 85 Duke），Kitchener | K-W Property Management Corp — Ash Patel (ash@kwproperty.com, cc leasing@kwproperty.com) | kwp@kwproperty.com → ash@kwproperty.com | **已确认列入通知名单** ✅：Ash 08-08 18:00Z 确认记下需求（55/85 Duke、9/1 入住），有 1B1B 放出会主动发细节+看房视频（19fe2834af9432ba）。渠道完结转被动等通知，无需再跟进 | 2026-08-08 18:00Z 收确认 | 0 |
 
@@ -36,6 +36,7 @@
 ## 日志
 
 - 2026-08-08 04:40 UTC：GitHub 写权限已开通，git push 恢复正常，积压提交已全部推送到远端。
+- 2026-08-10 20:4x UTC：收两封新回复：①Emerson：3106 在 DUO、户型图已附、车位不可去（$1,875 含）、视频稍后发、将发 Union Towers 选项；②Rob McFee 复活渠道 3：约电话+新 1B/1B+den 房源即将放出（9/1 可起租）。改写 Emerson 回信草稿、新建 Rob 回信草稿，PushNotification 已发。The Hub 最后跟进草稿仍待发送。
 - 2026-08-10 16:40 UTC：48h 节点触发：Emerson 与 Hub 均未回复。建两封跟进草稿（Emerson 跟进#1 r-4883265514127890651；Hub 最后跟进#2 r806286696716811663），已 PushNotification 提醒用户发送。Hub 计数达 2/2，发送后邮件渠道用尽。
 
 - 2026-08-04：完成三轮调研（楼盘识别 → 楼栋枚举 → 中介邮箱验证），共 14 个 agent、~80 万 tokens。
